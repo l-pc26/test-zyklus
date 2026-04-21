@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useData } from '../../context/DataContext';
 import { getAssetsPaginated } from '../../api/assets';
+import { apiFetch } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import { Card, Button, Input } from '../ui/core';
 import { NotificationCenter } from '../ui/NotificationCenter';
 import {
   Search, LogOut, Package, ChevronRight, X,
-  CheckCircle, LayoutGrid, List, ShoppingCart, Minus, Building2, ShieldCheck
+  CheckCircle, LayoutGrid, List, ShoppingCart, Minus, Building2, ShieldCheck, Phone
 } from 'lucide-react';
 import { ChatAssistant } from '../ui/ChatAssistant';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -119,6 +120,23 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
     if (isManagerView && onBack) onBack();
   };
 
+  const handleTestCall = async () => {
+    toast.loading('Solicitando llamada a Twilio...', { id: 'test-call' });
+    try {
+      const data = await apiFetch<{ ok: boolean }>('/api/notifications/test-call', {
+        method: 'POST'
+      });
+      
+      if (data.ok) {
+        toast.success('¡Llamada en camino! Revisa tu teléfono.', { id: 'test-call' });
+      } else {
+        toast.error('Falló la integración con Twilio.', { id: 'test-call' });
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Error al conectar con el servidor', { id: 'test-call' });
+    }
+  };
+
   if (isLoading) {
     return (
       <div className={`min-h-screen ${isManagerView ? 'bg-transparent' : 'bg-background'} font-sans`}>
@@ -211,6 +229,13 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                   )}
                 </button>
               )}
+              <button
+                onClick={handleTestCall}
+                className="p-2 rounded-lg hover:bg-slate-800/80 text-emerald-400 hover:text-emerald-300 transition-all border border-emerald-500/20 bg-emerald-500/10"
+                title="Probar Llamada"
+              >
+                <Phone size={20} />
+              </button>
               <RefreshButton />
               <NotificationCenter />
               <ThemeToggle />
@@ -266,7 +291,7 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                   onClick={() => setView('combos')}
                   className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all duration-300 ${view === 'combos' ? 'bg-primary text-black shadow-md scale-105' : 'text-slate-400 hover:text-white'}`}
                 >
-                  Combos
+                  Kits
                 </button>
               </div>
 
@@ -424,14 +449,14 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                       )}
                     </div>
                     <Button size="sm" variant="neon" className="w-full text-xs h-9 font-bold tracking-wider">
-                      Solicitar Combo Completo
+                      Solicitar Kit Completo
                     </Button>
                   </Card>
                 ))}
                 {bundles.length === 0 && (
                   <div className="col-span-full text-center py-16 text-slate-500">
                     <Package size={40} className="mx-auto mb-3 opacity-30" />
-                    <p>No hay combos configurados en el sistema.</p>
+                    <p>No hay kits configurados en el sistema.</p>
                   </div>
                 )}
               </div>
@@ -451,7 +476,7 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                 <p className="text-primary text-sm mt-0.5">
                   {checkoutFromCart && cart.length > 0
                     ? `${cart.length} activos en el carrito`
-                    : selectedAsset ? selectedAsset.name : `Combo: ${selectedBundle?.name}`}
+                    : selectedAsset ? selectedAsset.name : `Kit: ${selectedBundle?.name}`}
                 </p>
                 {checkoutFromCart && cart.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">

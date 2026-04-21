@@ -56,7 +56,7 @@ export function AssetStatusCard() {
   );
 
   // Activos disponibles (global, no depende de disciplina ya que es estado de activo)
-  const availableCount = stats?.assetCounts?.disponible ?? assets.filter(a => a.status === 'Disponible' || a.status === 'AVAILABLE').length;
+  const availableCount = stats?.assetCounts?.['disponible'] ?? assets.filter(a => a.status === 'Disponible').length;
 
   // Datos para el donut chart
   const chartData = useMemo(() => {

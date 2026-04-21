@@ -70,7 +70,7 @@ export function MyLoansView({ onShowQR, onFeedback }: MyLoansViewProps) {
                   <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setDetailReq(req)}>
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="text-white font-bold truncate hover:text-primary transition-colors">
-                        {req.is_bundle ? `${req.motive?.split(']')[0].replace('[COMBO: ', '') || 'Combo de equipos'}` : req.assets?.name || `Activo #${req.asset_id}`}
+                        {req.is_bundle ? (req.motive?.match(/\[(?:KIT|COMBO): (.+?)\]/)?.[1] || 'Kit de equipos') : req.assets?.name || `Activo #${req.asset_id}`}
                       </h3>
                       {!req.is_bundle && <span className="text-xs text-slate-500 font-mono flex-shrink-0">{req.assets?.tag}</span>}
                     </div>
@@ -147,7 +147,7 @@ export function MyLoansView({ onShowQR, onFeedback }: MyLoansViewProps) {
                 >
                   <div>
                     <p className="text-slate-300 text-sm font-medium">
-                      {req.is_bundle ? `Combo (${req.bundle_items} equipos)` : req.assets?.name || `Activo #${req.asset_id}`}
+                      {req.is_bundle ? `Kit (${req.bundle_items} equipos)` : req.assets?.name || `Activo #${req.asset_id}`}
                     </p>
                     <p className="text-slate-500 text-xs">{format(new Date(req.created_at), 'd MMM yyyy', { locale: es })}</p>
                   </div>

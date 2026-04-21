@@ -28,6 +28,24 @@ function hasAlertedToday(lastAlertAt: Date | null): boolean {
   return dayjs(lastAlertAt).isSame(dayjs(), 'day');
 }
 
+function isWithinCallWindow(): boolean {
+  try {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chihuahua',
+      hour: 'numeric',
+      hour12: false
+    });
+    const hour = parseInt(formatter.format(new Date()), 10);
+    // 9 AM to 3 PM (15:00) inclusive
+    return hour >= 9 && hour <= 15;
+  } catch (err) {
+    // Fallback in case of timezone error, assume UTC-6
+    const hour = new Date().getUTCHours() - 6;
+    const localHour = hour < 0 ? hour + 24 : hour;
+    return localHour >= 9 && localHour <= 15;
+  }
+}
+
 export async function processEscalations() {
   console.log('Running escalation processing...');
   try {
@@ -48,6 +66,11 @@ export async function processEscalations() {
     
     const now = dayjs();
     const adminPhones = await getAdminPhones();
+    const canCall = isWithinCallWindow();
+
+    if (!canCall) {
+      console.log('Outside of call window (9 AM - 3 PM Chihuahua time). Voice calls will be skipped this run.');
+    }
 
     for (const req of requests) {
       const assetName = req.asset_name || 'equipo';
@@ -59,7 +82,7 @@ export async function processEscalations() {
       // 1. SOLICITUDES PENDIENTES (> 5 min)
       if (req.status === 'PENDING') {
         const diffMinutes = now.diff(dayjs(req.created_at), 'minute');
-        if (diffMinutes >= 5 && req.manager_phone && !alertedToday) {
+        if (diffMinutes >= 5 && req.manager_phone && !alertedToday && canCall) {
           const message = `tienes solicitudes de equipo pendientes de aprobación en Zyklus. Por favor, revisa la plataforma.`;
           const success = await triggerVoiceAlert(req.manager_phone, managerName, message);
           if (success) await markVoiceAlert(req.id);
@@ -85,7 +108,7 @@ export async function processEscalations() {
         }
       }
 
-      if (req.status === 'OVERDUE' && !alertedToday) {
+      if (req.status === 'OVERDUE' && !alertedToday && canCall) {
         if (diffDays === 1 && req.user_phone) {
           const msg = `tu préstamo del activo ${assetName} venció ayer. Por favor, devuélvelo en caseta lo antes posible.`;
           const success = await triggerVoiceAlert(req.user_phone, userName, msg);

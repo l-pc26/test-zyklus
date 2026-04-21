@@ -43,6 +43,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID || '';
+const authToken = process.env.TWILIO_AUTH_TOKEN || '';
 const apiKeySid = process.env.TWILIO_API_KEY_SID || '';
 const apiKeySecret = process.env.TWILIO_API_KEY_SECRET || '';
 const twilioNumber = process.env.TWILIO_FROM_NUMBER || '';
@@ -50,15 +51,21 @@ const flowSid = process.env.TWILIO_STUDIO_FLOW_SID || '';
 
 let twilioClient: twilio.Twilio | null = null;
 
-if (apiKeySid && apiKeySecret && accountSid) {
-  try {
+try {
+  // Primero intentamos usar API Keys (más seguro)
+  if (apiKeySid && apiKeySecret && accountSid) {
     twilioClient = twilio(apiKeySid, apiKeySecret, { accountSid });
     console.log('Twilio client initialized with API Key');
-  } catch (error) {
-    console.error('Twilio initialization failed:', error);
+  } 
+  // Si no hay API Keys, usamos el clásico Auth Token
+  else if (accountSid && authToken) {
+    twilioClient = twilio(accountSid, authToken);
+    console.log('Twilio client initialized with Auth Token');
+  } else {
+    console.warn('Twilio credentials missing. Voice alerts disabled.');
   }
-} else {
-  console.warn('Twilio API Key credentials missing. Voice alerts disabled.');
+} catch (error) {
+  console.error('Twilio initialization failed:', error);
 }
 
 function formatPhoneNumber(phone: string): string {

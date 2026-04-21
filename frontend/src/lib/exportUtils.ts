@@ -85,7 +85,7 @@ export const exportRequestsToExcel = (requests: Request[]) => {
     'Fecha Retorno': safeDate(r.expected_return_date),
     'Motivo': r.motive ?? '—',
     'Institucion': r.institutions?.name ?? '—',
-    'Es Combo': r.bundle_group_id ? 'Si' : 'No',
+    'Es Kit': r.bundle_group_id ? 'Si' : 'No',
     'Danos': r.is_damaged ? `Si: ${r.damage_notes ?? ''}` : 'No',
   }));
 

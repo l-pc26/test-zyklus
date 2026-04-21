@@ -34,7 +34,7 @@ interface DataContextType {
 
   createBundle: (name: string, description: string, assetIds: string[]) => Promise<void>;
   updateBundle: (id: string, patch: { name?: string; description?: string; assetIds?: string[] }) => Promise<void>;
-  createBatchRequest: (bundle: Bundle, user: User, days: number, motive: string, autoApprove?: boolean) => Promise<void>;
+  createBatchRequest: (bundle: Bundle, user: User, days: number, motive: string, autoApprove?: boolean, institutionId?: number, isInternal?: boolean) => Promise<void>;
 
   addInstitution: (inst: Partial<Institution>) => Promise<void>;
   updateInstitution: (id: number, updates: Partial<Institution>) => Promise<void>;
@@ -47,8 +47,8 @@ interface DataContextType {
   returnRequestWithFeedback: (reqId: number, feedback: string) => Promise<void>;
   getTeamRequests: (managerId: string) => Request[];
 
-  createRequest: (asset: Asset, user: User, days: number, motive?: string, institutionId?: number, autoApprove?: boolean) => Promise<void>;
-  createMultipleRequests: (assets: Asset[], user: User, days: number, motive?: string, institutionId?: number, autoApprove?: boolean) => Promise<void>;
+  createRequest: (asset: Asset, user: User, days: number, motive?: string, institutionId?: number, autoApprove?: boolean, isInternal?: boolean) => Promise<void>;
+  createMultipleRequests: (assets: Asset[], user: User, days: number, motive?: string, institutionId?: number, autoApprove?: boolean, isInternal?: boolean) => Promise<void>;
   cancelRequest: (reqId: number) => Promise<void>;
   renewRequest: (reqId: number, additionalDays: number) => Promise<void>;
   getUserRequests: (userId: string) => Request[];
