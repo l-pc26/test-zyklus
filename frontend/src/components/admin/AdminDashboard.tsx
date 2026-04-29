@@ -6,8 +6,7 @@ import type { Asset } from '../../types';
 import { Card, Button } from '../ui/core';
 import {
   LogOut, Database, Search, LayoutGrid, Building2, ScanLine, Wrench,
-  PieChart, User as UserIcon, X, Package, AlertCircle, CheckCircle2,
-  ShieldCheck, BrainCircuit, Loader2, Flame
+  ShieldCheck, BrainCircuit, Loader2, Flame, FileDown
 } from 'lucide-react';
 import { ChatAssistant } from '../ui/ChatAssistant';
 import { InstitutionsManager } from './InstitutionsManager';
@@ -23,6 +22,7 @@ import { es } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { RefreshButton } from '../ui/RefreshButton';
 import { generatePredictiveReport as generateReport } from '../../lib/geminiUtils';
+import { generateResponsibilityVoucher } from '../../lib/exportUtils';
 import {
   AdminKPICard,
   AdminOverdueList,
@@ -50,6 +50,7 @@ export function AdminDashboard() {
   const [filterAction, setFilterAction] = useState('ALL');
   const debouncedSearchLog = useDebounce(searchLog);
   const debouncedFilterAction = useDebounce(filterAction);
+  const [visibleLogsCount, setVisibleLogsCount] = useState(20);
   const [aiReport, setAiReport] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -319,11 +320,13 @@ export function AdminDashboard() {
                       <th className="p-3 w-28">Estado / Acción</th>
                       <th className="p-3 w-32">Usuario</th>
                       <th className="p-3">Detalle</th>
+                      <th className="p-3 w-24 text-center">Contrato</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/50">
-                    {filteredLogs.slice(0, 20).map(log => {
+                    {filteredLogs.slice(0, visibleLogsCount).map(log => {
                       const badge = actionBadge[log.action] ?? { label: log.action, style: 'text-slate-400 bg-slate-700' };
+                      const relatedReq = log.target_type === 'REQUEST' ? requests.find(r => r.id.toString() === log.target_id) : null;
                       return (
                         <tr key={log.id} className="hover:bg-slate-800/30 transition-colors">
                           <td className="p-3 font-mono text-[10px] text-slate-500 whitespace-nowrap align-top">
@@ -338,18 +341,43 @@ export function AdminDashboard() {
                           <td className="p-3 text-slate-400 min-w-[200px] whitespace-normal leading-relaxed break-words align-top">
                             {log.details ?? '—'}
                           </td>
+                          <td className="p-3 align-top text-center">
+                            {relatedReq?.digital_signature ? (
+                              <button
+                                onClick={() => generateResponsibilityVoucher(relatedReq)}
+                                className="text-[10px] font-bold bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-black border border-cyan-500/20 px-2 py-1 rounded transition-colors flex items-center justify-center gap-1 mx-auto"
+                                title="Imprimir Contrato PDF"
+                              >
+                                <FileDown size={12} />
+                              </button>
+                            ) : (
+                              <span className="text-[10px] text-slate-600">—</span>
+                            )}
+                          </td>
                         </tr>
                       );
                     })}
                     {filteredLogs.length === 0 && (
-                      <tr><td colSpan={4} className="p-8 text-center text-slate-600">No hay registros con ese filtro</td></tr>
+                      <tr><td colSpan={5} className="p-8 text-center text-slate-600">No hay registros con ese filtro</td></tr>
                     )}
                   </tbody>
                 </table>
               </div>
-              <p className="text-[10px] text-slate-600 mt-2 text-right">
-                Mostrando {Math.min(filteredLogs.length, 20)} de {filteredLogs.length} registros. Log inmutable.
-              </p>
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-3 gap-3">
+                <p className="text-[10px] text-slate-600 text-center sm:text-left">
+                  Mostrando {Math.min(filteredLogs.length, visibleLogsCount)} de {filteredLogs.length} registros. Log inmutable.
+                </p>
+                {visibleLogsCount < filteredLogs.length && (
+                  <Button
+                    onClick={() => setVisibleLogsCount(v => v + 50)}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300 w-full sm:w-auto"
+                  >
+                    Cargar más registros
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         )}

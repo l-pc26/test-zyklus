@@ -46,6 +46,9 @@ export async function getAllData(): Promise<DataPayload> {
            r.rejection_feedback,
            r.feedback_log,
            r.created_at,
+           r.digital_signature,
+           r.terms_accepted,
+           r.signature_date,
            CASE WHEN a.id IS NULL THEN NULL ELSE row_to_json((SELECT sub FROM (SELECT a.id, a.tag, a.name, a.status, a.category, a.image, a.usage_count, a.maintenance_alert) AS sub)) END AS assets,
            CASE WHEN u.id IS NULL THEN NULL ELSE row_to_json((SELECT sub FROM (SELECT u.id, u.name, u.email, u.role, u.disciplina, u.manager_id, u.created_at) AS sub)) END AS users,
            CASE WHEN i.id IS NULL THEN NULL ELSE row_to_json((SELECT sub FROM (SELECT i.id, i.name, i.contact_name, i.contact_email, i.contact_phone, i.address, i.created_at) AS sub)) END AS institutions
