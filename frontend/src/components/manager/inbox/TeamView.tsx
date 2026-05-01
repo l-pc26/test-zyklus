@@ -68,7 +68,7 @@ export function TeamView() {
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{r.requester_name}</p>
                   <p className="text-slate-400 text-xs truncate">
-                    {r.is_bundle ? `Kit (${r.bundle_items} equipos)` : r.assets?.name}
+                    {r.is_bundle ? `Combo (${r.bundle_items} equipos)` : r.assets?.name}
                   </p>
                   <div className="flex flex-wrap items-center gap-2 mt-1.5">
                     {r.is_internal && (

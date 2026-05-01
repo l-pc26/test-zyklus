@@ -29,7 +29,7 @@ export function LeaderQRModal({ request, onClose }: LeaderQRModalProps) {
         </div>
         <p className="text-xs text-slate-400 font-bold mb-1">
           {request.is_bundle
-            ? `Kit (${request.bundle_items} piezas)`
+            ? `Combo (${request.bundle_items} piezas)`
             : request.assets?.name}
         </p>
         <p className="text-[10px] text-slate-500">Aprobación automática de Líder.</p>

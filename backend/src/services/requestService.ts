@@ -98,7 +98,7 @@ export async function createBatchRequest(body: {
   }
 }
 
-/** Crea solicitudes para un combo (kit). */
+/** Crea solicitudes para un combo (combo). */
 export async function createBundleRequest(body: {
   bundleId: string;
   assetIds: string[];
@@ -114,13 +114,13 @@ export async function createBundleRequest(body: {
   isInternal?: boolean;
 }): Promise<void> {
   const { bundleId, assetIds, bundleName, userId, userName, userDisciplina, managerId, days, motive, institutionId, autoApprove, isInternal } = body;
-  if (assetIds.length === 0) throw new Error('Kit sin activos');
+  if (assetIds.length === 0) throw new Error('Combo sin activos');
   const returnDate = toReturnDate(days);
   const bundleGroupId = `BNDL-${Date.now()}`;
   const status = autoApprove ? (isInternal ? 'ACTIVE_INTERNAL' : 'APPROVED') : 'PENDING';
   const approvedAt = autoApprove ? new Date().toISOString() : null;
   const checkoutAt = autoApprove && isInternal ? approvedAt : null;
-  const motiveText = `[KIT: ${bundleName}] ${motive}`;
+  const motiveText = `[COMBO: ${bundleName}] ${motive}`;
   for (const assetId of assetIds) {
     const ar = await query(`SELECT status FROM assets WHERE id = $1`, [assetId]);
     const a = ar.rows[0] as { status: string } | undefined;
@@ -139,8 +139,8 @@ export async function createBundleRequest(body: {
   if (autoApprove) {
     await logAudit('APPROVE', userId, userName, bundleGroupId, 'REQUEST', `Auto-combo: ${bundleName}`);
   } else {
-    if (managerId) await createNotif(managerId, 'Nueva Solicitud — Kit', `${userName} solicita kit "${bundleName}".`, 'INFO');
-    await notifyByRole('ADMIN_PATRIMONIAL', 'Nueva Solicitud — Kit', `${userName} solicita kit "${bundleName}".`, 'INFO');
+    if (managerId) await createNotif(managerId, 'Nueva Solicitud — Combo', `${userName} solicita combo "${bundleName}".`, 'INFO');
+    await notifyByRole('ADMIN_PATRIMONIAL', 'Nueva Solicitud — Combo', `${userName} solicita combo "${bundleName}".`, 'INFO');
   }
 }
 

@@ -164,7 +164,7 @@ export function InventoryView({ onPrintSelected, onPrintSingle }: InventoryViewP
             className="flex items-center gap-2 h-11 px-4 rounded-xl text-sm font-bold transition-all border bg-slate-900 text-slate-300 border-slate-700 hover:border-primary/60 hover:text-primary hover:bg-primary/5 active:scale-95"
           >
             <Package size={15} />
-            <span>Kits</span>
+            <span>Combos</span>
           </button>
         </div>
         </div>

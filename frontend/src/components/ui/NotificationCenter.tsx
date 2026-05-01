@@ -26,7 +26,7 @@ const AUDITOR_ALLOWED_TITLES = [
 const ADMIN_HIDDEN_TITLES = [
   'Nueva Solicitud',
   'Nueva Solicitud — Carrito',
-  'Nueva Solicitud — Kit',
+  'Nueva Solicitud — Combo',
   'Activo Retirado',
   'Equipo Retirado',
   'Devolución Registrada',

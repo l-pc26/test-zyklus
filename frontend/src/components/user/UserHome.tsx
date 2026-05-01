@@ -291,7 +291,7 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                   onClick={() => setView('combos')}
                   className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all duration-300 ${view === 'combos' ? 'bg-primary text-black shadow-md scale-105' : 'text-slate-400 hover:text-white'}`}
                 >
-                  Kits
+                  Combos
                 </button>
               </div>
 
@@ -449,14 +449,14 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                       )}
                     </div>
                     <Button size="sm" variant="neon" className="w-full text-xs h-9 font-bold tracking-wider">
-                      Solicitar Kit Completo
+                      Solicitar Combo Completo
                     </Button>
                   </Card>
                 ))}
                 {bundles.length === 0 && (
                   <div className="col-span-full text-center py-16 text-slate-500">
                     <Package size={40} className="mx-auto mb-3 opacity-30" />
-                    <p>No hay kits configurados en el sistema.</p>
+                    <p>No hay combos configurados en el sistema.</p>
                   </div>
                 )}
               </div>
@@ -476,7 +476,7 @@ export function UserHome({ isManagerView = false, onBack }: { isManagerView?: bo
                 <p className="text-primary text-sm mt-0.5">
                   {checkoutFromCart && cart.length > 0
                     ? `${cart.length} activos en el carrito`
-                    : selectedAsset ? selectedAsset.name : `Kit: ${selectedBundle?.name}`}
+                    : selectedAsset ? selectedAsset.name : `Combo: ${selectedBundle?.name}`}
                 </p>
                 {checkoutFromCart && cart.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">

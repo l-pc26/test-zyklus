@@ -35,7 +35,7 @@ export function QRModal({ request, onClose }: QRModalProps) {
             <span className="text-white font-medium">{request.requester_name}</span>
           </div>
           <div className="flex justify-between text-xs text-primary font-bold">
-            <span>{request.is_bundle ? 'Kit' : 'Activo'}</span>
+            <span>{request.is_bundle ? 'Combo' : 'Activo'}</span>
             <span className="text-right">{request.is_bundle ? `${request.bundle_items} equipos` : request.assets?.name}</span>
           </div>
           <div className="flex justify-between text-xs">

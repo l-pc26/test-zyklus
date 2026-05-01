@@ -148,7 +148,7 @@ export function ManagerInbox() {
                           <p className="text-primary text-sm font-medium flex items-center gap-1">
                             {r.is_bundle ? <Package size={14} /> : <Box size={14} />}
                             {r.is_bundle
-                              ? `Kit: ${r.motive?.match(/\[(?:KIT|COMBO): (.+?)\]/)?.[1] || ''} (${r.bundle_items} equipos)`
+                              ? `Combo: ${r.motive?.match(/\[(?:KIT|COMBO): (.+?)\]/)?.[1] || ''} (${r.bundle_items} equipos)`
                               : r.assets?.name}
                           </p>
                           {r.is_internal && (
@@ -241,7 +241,7 @@ export function ManagerInbox() {
                   <Card key={r.id} className="flex items-center justify-between gap-4">
                     <div>
                       <h3 className="text-white font-bold">
-                        {r.is_bundle ? `Kit (${r.bundle_items} equipos)` : r.assets?.name}
+                        {r.is_bundle ? `Combo (${r.bundle_items} equipos)` : r.assets?.name}
                       </h3>
                       <p className="text-xs text-slate-500 font-mono">
                         {r.is_bundle ? 'Solicitud Grupal' : r.assets?.tag}

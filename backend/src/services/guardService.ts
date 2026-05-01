@@ -51,7 +51,7 @@ export async function processGuardScan(
         [bundleId]
       );
       reqsToProcess = (result.rows ?? []) as Array<Record<string, unknown>>;
-      if (reqsToProcess.length === 0) return { success: false, message: 'Kit sin solicitudes aprobadas.' };
+      if (reqsToProcess.length === 0) return { success: false, message: 'Combo sin solicitudes aprobadas.' };
       // Verificar si es interno — los préstamos internos no pasan por caseta
       const firstReq = reqsToProcess[0] as { is_internal?: boolean };
       if (firstReq.is_internal) {

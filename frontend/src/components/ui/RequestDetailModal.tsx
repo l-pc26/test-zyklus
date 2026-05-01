@@ -63,12 +63,12 @@ export function RequestDetailModal({ request: req, onClose }: RequestDetailModal
                   : <Tag size={16} className="text-primary flex-shrink-0" />
                 }
                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest">
-                  {isBundle ? `Kit · ${req.bundle_items || 1} equipos` : 'Solicitud Individual'}
+                  {isBundle ? `Combo · ${req.bundle_items || 1} equipos` : 'Solicitud Individual'}
                 </span>
               </div>
               <h2 className="text-white font-bold text-lg leading-tight">
                 {isBundle
-                  ? req.motive?.match(/\[(?:KIT|COMBO): (.+?)\]/)?.[1] || 'Kit de equipos'
+                  ? req.motive?.match(/\[(?:KIT|COMBO): (.+?)\]/)?.[1] || 'Combo de equipos'
                   : req.assets?.name || `Activo #${req.asset_id}`
                 }
               </h2>
@@ -99,7 +99,7 @@ export function RequestDetailModal({ request: req, onClose }: RequestDetailModal
               <div className="py-2.5 border-b border-slate-800/60">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-slate-500"><Package size={14} /></span>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Activos del Kit ({req.bundle_assets.length})</p>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Activos del Combo ({req.bundle_assets.length})</p>
                 </div>
                 <div className="space-y-1.5">
                   {req.bundle_assets.map((a, i) => (
@@ -181,7 +181,7 @@ export function RequestDetailModal({ request: req, onClose }: RequestDetailModal
 
             {/* ID de referencia */}
             <Field label="ID de solicitud" value={`#${req.id}`} icon={<Hash size={14} />} />
-            {req.bundle_group_id && <Field label="ID de kit" value={req.bundle_group_id} />}
+            {req.bundle_group_id && <Field label="ID de combo" value={req.bundle_group_id} />}
 
             {/* Feedback / Notas */}
             {req.feedback_log && (

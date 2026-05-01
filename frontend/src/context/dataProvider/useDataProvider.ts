@@ -186,10 +186,10 @@ export function useDataProvider() {
   const createBundle = async (name: string, description: string, assetIds: string[]) => {
     try {
       await apiBundles.createBundle(name, description, assetIds);
-      toast.success(`Kit "${name}" creado`);
+      toast.success(`Combo "${name}" creado`);
       fetchData();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al crear kit');
+      toast.error(err instanceof Error ? err.message : 'Error al crear combo');
     }
   };
 
@@ -204,7 +204,7 @@ export function useDataProvider() {
   };
 
   const createBatchRequest = async (bundle: Bundle, user: User, days: number, motive: string, autoApprove = false, institutionId?: number, isInternal = false) => {
-    if (!bundle.assets?.length) { toast.error('Kit sin activos'); return; }
+    if (!bundle.assets?.length) { toast.error('Combo sin activos'); return; }
     const unavail = bundle.assets.filter(a => a.status !== 'Disponible');
     if (unavail.length) { toast.error(`No disponibles: ${unavail.map(a => `${a.name}(${a.status})`).join(', ')}`); return; }
     try {
@@ -219,7 +219,7 @@ export function useDataProvider() {
         institutionId,
         isInternal
       );
-      toast.success(`Kit "${bundle.name}" solicitado`);
+      toast.success(`Combo "${bundle.name}" solicitado`);
       fetchData();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Error');
@@ -280,7 +280,7 @@ export function useDataProvider() {
         userId: req.user_id,
         assetName: req.assets?.name,
       });
-      toast.success(req.bundle_group_id ? 'Kit aprobado' : 'Aprobado');
+      toast.success(req.bundle_group_id ? 'Combo aprobado' : 'Aprobado');
       fetchData();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Error');
@@ -378,7 +378,7 @@ export function useDataProvider() {
         ? (req.bundle_group_id ? requests.filter(r => r.bundle_group_id === req.bundle_group_id).map(r => r.asset_id) : req.asset_id ? [req.asset_id] : []).filter(Boolean) as string[]
         : undefined;
       await apiRequests.cancelRequest(reqId, { bundleGroupId: req.bundle_group_id ?? undefined, assetIdsToFree });
-      toast.success(req.bundle_group_id ? 'Solicitud (carrito/kit) cancelada' : 'Solicitud cancelada');
+      toast.success(req.bundle_group_id ? 'Solicitud (carrito/combo) cancelada' : 'Solicitud cancelada');
       fetchData();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Error');

@@ -272,7 +272,7 @@ export const BundleManager = () => {
               value={bundleName}
               onChange={e => setBundleName(e.target.value)}
               className="bg-slate-950 border-slate-700 text-white"
-              placeholder="Ej: Kit de Grabación"
+              placeholder="Ej: Combo de Grabación"
             />
             <label className="block text-xs font-bold text-slate-400 uppercase">Descripción (opcional)</label>
             <Input
