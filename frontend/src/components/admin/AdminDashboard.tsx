@@ -6,7 +6,8 @@ import type { Asset } from '../../types';
 import { Card, Button } from '../ui/core';
 import {
   LogOut, Database, Search, LayoutGrid, Building2, ScanLine, Wrench,
-  ShieldCheck, BrainCircuit, Loader2, Flame, FileDown
+  ShieldCheck, BrainCircuit, Loader2, Flame, FileDown,
+  PieChart, UserIcon, X, Package, CheckCircle2, AlertCircle
 } from 'lucide-react';
 import { ChatAssistant } from '../ui/ChatAssistant';
 import { InstitutionsManager } from './InstitutionsManager';
