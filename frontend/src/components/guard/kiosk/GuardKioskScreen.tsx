@@ -56,19 +56,24 @@ export function GuardKioskScreen() {
                 onClick={() => setAction('CHECKOUT')}
                 className={[
                   'h-[220px] sm:h-[260px] rounded-[28px] border text-left px-8 sm:px-10 py-8 sm:py-10 transition-all active:scale-[0.99]',
-                  'bg-slate-950/35 hover:bg-slate-950/50',
+                  'relative overflow-hidden bg-slate-900/80 hover:bg-slate-900',
+                  'shadow-[0_20px_60px_rgba(0,0,0,0.35)]',
                   'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25',
-                  action === 'CHECKOUT' ? 'border-primary/35 ring-2 ring-primary/20' : 'border-white/10',
+                  action === 'CHECKOUT'
+                    ? 'border-primary/50 ring-2 ring-primary/25'
+                    : 'border-white/15 hover:border-white/25',
                 ].join(' ')}
               >
+                <div className="absolute inset-0 opacity-80 bg-[radial-gradient(600px_circle_at_20%_20%,rgba(6,182,212,0.18),transparent_60%)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary/80" />
                 <div className="flex items-start justify-between gap-6">
                   <div>
                     <p className="text-slate-400 text-xs font-black tracking-widest uppercase">Salida</p>
                     <h2 className="mt-2 text-white font-black text-4xl tracking-tight">Check-out</h2>
-                    <p className="mt-2 text-slate-400 text-base">Escanea solicitud → luego activo</p>
+                    <p className="mt-2 text-slate-300 text-base font-medium">Escanea solicitud → luego activo</p>
                   </div>
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <LogOut className="text-primary" size={26} />
+                  <div className="w-14 h-14 rounded-2xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0 shadow-[0_0_0_1px_rgba(6,182,212,0.10)]">
+                    <LogOut className="text-primary" size={28} />
                   </div>
                 </div>
               </button>
@@ -78,19 +83,24 @@ export function GuardKioskScreen() {
                 onClick={() => setAction('CHECKIN')}
                 className={[
                   'h-[220px] sm:h-[260px] rounded-[28px] border text-left px-8 sm:px-10 py-8 sm:py-10 transition-all active:scale-[0.99]',
-                  'bg-slate-950/35 hover:bg-slate-950/50',
+                  'relative overflow-hidden bg-slate-900/80 hover:bg-slate-900',
+                  'shadow-[0_20px_60px_rgba(0,0,0,0.35)]',
                   'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25',
-                  action === 'CHECKIN' ? 'border-primary/35 ring-2 ring-primary/20' : 'border-white/10',
+                  action === 'CHECKIN'
+                    ? 'border-primary/50 ring-2 ring-primary/25'
+                    : 'border-white/15 hover:border-white/25',
                 ].join(' ')}
               >
+                <div className="absolute inset-0 opacity-70 bg-[radial-gradient(600px_circle_at_20%_20%,rgba(6,182,212,0.16),transparent_60%)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary/80" />
                 <div className="flex items-start justify-between gap-6">
                   <div>
                     <p className="text-slate-400 text-xs font-black tracking-widest uppercase">Entrada</p>
                     <h2 className="mt-2 text-white font-black text-4xl tracking-tight">Check-in</h2>
-                    <p className="mt-2 text-slate-400 text-base">Escanea el activo</p>
+                    <p className="mt-2 text-slate-300 text-base font-medium">Escanea el activo</p>
                   </div>
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <LogIn className="text-primary" size={26} />
+                  <div className="w-14 h-14 rounded-2xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0 shadow-[0_0_0_1px_rgba(6,182,212,0.10)]">
+                    <LogIn className="text-primary" size={28} />
                   </div>
                 </div>
               </button>
